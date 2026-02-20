@@ -3,11 +3,8 @@ data/*
 !data/dataset/.gitkeep
 !data/dataset_faces/.gitkeep
 
-resultados/*
-!resultados/.gitkeep
-!resultados/cnn_baseline/.gitkeep
-!resultados/mesonet/.gitkeep
-
+resultados/*.pt
+resultados/**/*.pt
 *.pt
 
 venv/
