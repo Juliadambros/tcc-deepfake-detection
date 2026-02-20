@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
 
-IMAGE_PATH = "data/dataset/fake/198_106_24.jpg"
+IMAGE_PATH = "data/dataset/fake/000_003_19.jpg"
 TRUE_CLASS = "fake" 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
