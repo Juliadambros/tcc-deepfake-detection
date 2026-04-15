@@ -1,0 +1,19 @@
+Resumo consolidado dos experimentos de imagens MesoNet
+=====================================================
+Total de experimentos encontrados: 171
+
+Melhor experimento geral:
+- run_name: treinamento_imagens_4_fase1_2026-04-03_12-22-26_bs32_ep200_lr0.0001_optRMSprop_dc0.25_df0.3_wd0.0001
+- experiment_group: treinamento_imagens_4_fase1
+- test_f1_macro: 0.988476
+- test_accuracy: 0.988476
+- best_val_acc: 0.988469
+- best_epoch: 170
+- optimizer: RMSprop
+- learning_rate: 0.0001
+- batch_size: 32
+- dropout_conv: 0.25
+- dropout_fc: 0.3
+- weight_decay: 0.0001
+- epochs_requested: 200
+- run_dir: C:\tcc mesonet\experiments\mesonet\treinamento_imagens_4_fase1\treinamento_imagens_4_fase1_2026-04-03_12-22-26_bs32_ep200_lr0.0001_optRMSprop_dc0.25_df0.3_wd0.0001

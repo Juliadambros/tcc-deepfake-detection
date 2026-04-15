@@ -1,0 +1,28 @@
+{
+  "seed": 42,
+  "model_name": "mesonet",
+  "run_prefix": "treinamento_imagens_4_fase3",
+  "data_split_dir": "data/splits/split_01_interval_10",
+
+  "experiments_dir": "experiments/mesonet/treinamento_imagens_4_fase3",
+  "reports_csv": "reports/tables/treinamento_imagens_4_fase3.csv",
+  "best_overall_checkpoint": "checkpoints/best_treinamento_imagens_4_fase3.pt",
+
+  "device": "auto",
+  "img_size": 256,
+  "num_workers": 0,
+  "pin_memory": false,
+
+  "use_early_stopping": false,
+  "save_last_model": true,
+
+  "search_space": {
+    "batch_size": [16, 32],
+    "epochs": [250],
+    "learning_rate": [0.0001],
+    "optimizer": ["RMSprop"],
+    "dropout_conv": [0.25],
+    "dropout_fc": [0.3],
+    "weight_decay": [0.0001]
+  }
+}

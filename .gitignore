@@ -3,9 +3,12 @@ data/*
 !data/dataset/.gitkeep
 !data/dataset_faces/.gitkeep
 
+experiments/*
+
 resultados/*.pt
 resultados/**/*.pt
 *.pt
+
 
 venv/
 

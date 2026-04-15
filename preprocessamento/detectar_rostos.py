@@ -1,59 +1,93 @@
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+
 import cv2
-import os
 
-xml_path = "haarcascade_frontalface_default.xml"
 
-entrada_real = "data/dataset/real"
-entrada_fake = "data/dataset/fake"
+def process_images(
+    input_dir: Path,
+    output_dir: Path,
+    xml_path: Path,
+    img_size: int,
+    scale_factor: float,
+    min_neighbors: int,
+    min_size: int,
+) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    face_cascade = cv2.CascadeClassifier(str(xml_path))
+    if face_cascade.empty():
+        raise RuntimeError(f'Não foi possível carregar o XML em: {xml_path}')
 
-saida_real = "data/dataset_faces/real"
-saida_fake = "data/dataset_faces/fake"
+    image_paths = sorted([p for p in input_dir.iterdir() if p.suffix.lower() in {'.jpg', '.jpeg', '.png'}])
+    saved = 0
+    skipped = 0
 
-tamanho = 256
-face_cascade = cv2.CascadeClassifier(xml_path)
-
-def processar_imagens(pasta_entrada, pasta_saida):
-    os.makedirs(pasta_saida, exist_ok=True)
-
-    imagens = [img for img in os.listdir(pasta_entrada) if img.endswith(".jpg")]
-    total_salvas = 0
-
-    for i, nome_img in enumerate(imagens):
-        caminho_img = os.path.join(pasta_entrada, nome_img)
-        img = cv2.imread(caminho_img)
-        if img is None:
+    for idx, image_path in enumerate(image_paths, start=1):
+        image = cv2.imread(str(image_path))
+        if image is None:
+            skipped += 1
             continue
 
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(
             gray,
-            scaleFactor=1.1,
-            minNeighbors=5,
-            minSize=(60, 60)
+            scaleFactor=scale_factor,
+            minNeighbors=min_neighbors,
+            minSize=(min_size, min_size),
         )
 
         if len(faces) == 0:
+            skipped += 1
             continue
 
-        x, y, w, h = max(faces, key=lambda f: f[2]*f[3])
-        rosto = img[y:y+h, x:x+w]
-        rosto = cv2.resize(rosto, (tamanho, tamanho))
+        x, y, w, h = max(faces, key=lambda face: face[2] * face[3])
+        face_crop = image[y:y + h, x:x + w]
+        face_crop = cv2.resize(face_crop, (img_size, img_size))
+        cv2.imwrite(str(output_dir / image_path.name), face_crop)
+        saved += 1
 
-        caminho_saida = os.path.join(pasta_saida, nome_img)
-        cv2.imwrite(caminho_saida, rosto)
+        if idx % 500 == 0:
+            print(f'{idx}/{len(image_paths)} imagens processadas em {input_dir.name}')
 
-        total_salvas += 1
-        if (i+1) % 500 == 0:
-            print(f"{i+1}/{len(imagens)} imagens processadas")
+    print(f'{input_dir} -> salvas: {saved} | sem rosto/erro: {skipped}')
 
-    print(f"Total de rostos salvos: {total_salvas}")
 
-print("=== PROCESSANDO REAL ===")
-processar_imagens(entrada_real, saida_real)
+def main() -> None:
+    parser = argparse.ArgumentParser(description='Detecta rostos nos frames e salva dataset processado.')
+    parser.add_argument('--input-dir', default='data/interim/frames_interval_10')
+    parser.add_argument('--output-dir', default='data/processed/faces_256_interval_10')#nome por conta do tamanho da imagem 
+    parser.add_argument('--xml-path', default=str(Path(__file__).resolve().parent / 'haarcascade_frontalface_default.xml'))
+    parser.add_argument('--img-size', type=int, default=256)#faces redimensionados para 256x256 pixels
+    parser.add_argument('--scale-factor', type=float, default=1.1)
+    parser.add_argument('--min-neighbors', type=int, default=5)
+    parser.add_argument('--min-size', type=int, default=60)
+    args = parser.parse_args()
 
-print("\n=== PROCESSANDO FAKE ===")
-processar_imagens(entrada_fake, saida_fake)
+    input_dir = Path(args.input_dir)
+    output_dir = Path(args.output_dir)
+    xml_path = Path(args.xml_path)
 
-print("\nFINALIZADO")
+    process_images(
+        input_dir / 'real',
+        output_dir / 'real',
+        xml_path,
+        args.img_size,
+        args.scale_factor,
+        args.min_neighbors,
+        args.min_size,
+    )
+    process_images(
+        input_dir / 'fake',
+        output_dir / 'fake',
+        xml_path,
+        args.img_size,
+        args.scale_factor,
+        args.min_neighbors,
+        args.min_size,
+    )
 
+
+if __name__ == '__main__':
+    main()

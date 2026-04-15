@@ -1,57 +1,75 @@
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+
 import cv2
-import os
 
-pasta_base = "data/FaceForensics++_C23"
-pasta_original = os.path.join(pasta_base, "original")
-pasta_fake = os.path.join(pasta_base, "deepfakes")
 
-saida_real = "data/dataset/real"
-saida_fake = "data/dataset/fake"
+def extract_frames_from_folder(
+    input_dir: Path,
+    output_dir: Path,
+    max_videos: int,
+    frame_interval: int,
+) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    videos = sorted([p for p in input_dir.iterdir() if p.suffix.lower() in {'.mp4', '.avi', '.mov', '.mkv'}])
+    videos = videos[:max_videos] if max_videos > 0 else videos
 
-max_videos = 200
-frame_interval = 15
+    print(f'Pasta: {input_dir}')
+    print(f'Total de vídeos selecionados: {len(videos)}')
 
-def extrair_frames(pasta_videos, pasta_saida, limite):
-    os.makedirs(pasta_saida, exist_ok=True)
-
-    videos = [v for v in os.listdir(pasta_videos) if v.endswith(".mp4")]
-    videos = videos[:limite]
-
-    print(f"Total de vídeos selecionados: {len(videos)}")
-    total_frames_salvos = 0
-
-    for i, video_nome in enumerate(videos):
-        caminho_video = os.path.join(pasta_videos, video_nome)
-        cap = cv2.VideoCapture(caminho_video)
-
-        count = 0
-        frame_id = 0
+    total_saved = 0
+    for idx, video_path in enumerate(videos, start=1):
+        cap = cv2.VideoCapture(str(video_path))
+        frame_count = 0
+        saved_from_video = 0
 
         while True:
             ret, frame = cap.read()
             if not ret:
                 break
 
-            if count % frame_interval == 0:
-                nome_frame = f"{video_nome[:-4]}_{frame_id}.jpg"
-                caminho_saida = os.path.join(pasta_saida, nome_frame)
-                cv2.imwrite(caminho_saida, frame)
-                frame_id += 1
-                total_frames_salvos += 1
+            if frame_count % frame_interval == 0:
+                frame_name = f'{video_path.stem}_frame{saved_from_video:05d}.jpg'
+                cv2.imwrite(str(output_dir / frame_name), frame)
+                saved_from_video += 1
+                total_saved += 1
 
-            count += 1
+            frame_count += 1
 
         cap.release()
-        print(f"[{i+1}/{len(videos)}] {video_nome} concluído")
+        print(f'[{idx}/{len(videos)}] {video_path.name} -> {saved_from_video} frames')
 
-    print(f"\nTotal de frames salvos: {total_frames_salvos}")
-
-print("=== EXTRAINDO REAL ===")
-extrair_frames(pasta_original, saida_real, max_videos)
-
-print("\n=== EXTRAINDO FAKE ===")
-extrair_frames(pasta_fake, saida_fake, max_videos)
-
-print("\nFINALIZADO")
+    print(f'Total de frames salvos em {output_dir}: {total_saved}')
 
 
+def main() -> None:
+    parser = argparse.ArgumentParser(description='Extrai frames dos vídeos reais e falsos.')
+    parser.add_argument('--raw-dir', default='data/raw/FaceForensics++_C23')
+    parser.add_argument('--real-subdir', default='original')
+    parser.add_argument('--fake-subdir', default='deepfakes')
+    parser.add_argument('--output-dir', default='data/interim/frames_interval_10')
+    parser.add_argument('--max-videos', type=int, default=200) #200 primeiros 
+    parser.add_argument('--frame-interval', type=int, default=10) #1 a cada 15 frames
+    args = parser.parse_args()
+
+    raw_dir = Path(args.raw_dir)
+    output_dir = Path(args.output_dir)
+
+    extract_frames_from_folder(
+        raw_dir / args.real_subdir,
+        output_dir / 'real',
+        args.max_videos,
+        args.frame_interval,
+    )
+    extract_frames_from_folder(
+        raw_dir / args.fake_subdir,
+        output_dir / 'fake',
+        args.max_videos,
+        args.frame_interval,
+    )
+
+
+if __name__ == '__main__':
+    main()
