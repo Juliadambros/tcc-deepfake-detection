@@ -1,0 +1,28 @@
+{
+  "seed": 42,
+  "model_name": "cnn_baseline",
+  "run_prefix": "imagensCNNfase4",
+
+  "data_split_dir": "data/splits/split_01_interval_10",
+
+  "experiments_dir": "experiments/cnn_baseline/imagensCNNfase4",
+  "reports_csv": "reports/tables/cnn/imagensCNNfase4.csv",
+  "best_overall_checkpoint": "checkpoints/cnn/best_imagensCNNfase4.pt",
+
+  "device": "auto",
+  "img_size": 256,
+  "num_workers": 0,
+  "pin_memory": false,
+
+  "use_early_stopping": false,
+  "save_last_model": true,
+
+  "search_space": {
+    "batch_size": [16],
+    "epochs": [50, 100],
+    "learning_rate": [0.0003, 0.0005, 0.0007],
+    "optimizer": ["SGD"],
+    "dropout_fc": [0.6, 0.7],
+    "weight_decay": [0.0, 0.00001, 0.00005]
+  }
+}

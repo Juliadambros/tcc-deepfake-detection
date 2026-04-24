@@ -1,0 +1,29 @@
+{
+  "seed": 42,
+  "model_name": "cnn_baseline",
+  "run_prefix": "cnn_base_interval_10",
+
+  "data_split_dir": "data/splits/split_01_interval_10",
+
+  "experiments_dir": "experiments/cnn_baseline/base",
+  "reports_csv": "reports/tables/cnn/cnn_baseline.csv",
+  "best_overall_checkpoint": "checkpoints/cnn/best_cnn_baseline_overall.pt",
+
+  "device": "auto",
+
+  "img_size": 256,
+  "batch_size": 32,
+  "epochs": 50,
+
+  "learning_rate": 0.001,
+  "optimizer": "Adam",
+  "dropout_fc": 0.5,
+  "weight_decay": 0.0001,
+
+  "num_workers": 0,
+  "pin_memory": false,
+
+  "use_early_stopping": true,
+  "early_stopping_patience": 10,
+  "save_last_model": true
+}
