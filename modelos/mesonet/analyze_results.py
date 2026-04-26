@@ -99,6 +99,58 @@ def save_scatterplot(
     fig.savefig(output_path, dpi=200)
     plt.close(fig)
 
+def save_top10_time_logplot(df, output_path, figsize=(13, 7)):
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import FuncFormatter
+
+    plot_df = df.copy()
+
+    plot_df["rank_num"] = (
+        plot_df["rank"].str.replace("Exp ", "", regex=False).astype(int)
+    )
+
+    plot_df = plot_df.sort_values("rank_num")
+
+    labels = [
+        f"{r} ({int(e)} ep.)"
+        for r, e in zip(plot_df["rank"], plot_df["epochs_executed"])
+    ]
+
+    tempos = plot_df["total_training_time_sec"]
+
+    fig, ax = plt.subplots(figsize=figsize)
+
+    bars = ax.barh(labels, tempos)
+
+    ax.invert_yaxis()
+    ax.xaxis.set_major_formatter(
+        FuncFormatter(lambda x, pos: f"{int(x):,}".replace(",", "."))
+    )
+
+    ax.set_title(
+        "Tempo de treinamento dos 10 melhores experimentos\n"
+        "(ordenados por F1-score macro)",
+        fontsize=16,
+        pad=15
+    )
+
+    ax.set_xlabel("Tempo total de treinamento (segundos)", fontsize=13)
+    ax.set_ylabel("Experimentos", fontsize=13)
+
+    ax.grid(axis="x", linestyle="--", alpha=0.4)
+
+    for bar, valor in zip(bars, tempos):
+        ax.text(
+            valor + 25,
+            bar.get_y() + bar.get_height()/2,
+            f"{int(valor)} s",
+            va="center",
+            fontsize=10
+        )
+
+    plt.tight_layout()
+    fig.savefig(output_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -132,6 +184,7 @@ def main() -> None:
         "test_f1_macro",
         "test_accuracy",
         "best_epoch",
+        "total_training_time_sec",
     ]
     missing = [col for col in required_cols if col not in df.columns]
     if missing:
@@ -153,6 +206,11 @@ def main() -> None:
         output_path=out_dir / "top10_f1_macro.png",
         figsize=(11, 6),
         rotation=0,
+    )
+
+    save_top10_time_logplot(
+        ranking,
+        output_path=out_dir / "top10_tempo_log_epocas.png",
     )
 
     mean_by_epochs_requested = (
@@ -303,6 +361,7 @@ def main() -> None:
         f"- best_epoch: {best['best_epoch']}",
         f"- dropout_fc: {best['dropout_fc']}",
         f"- weight_decay: {best['weight_decay']}",
+        f"- total_training_time_sec: {best['total_training_time_sec']}",
     ]
 
     with open(out_dir / "resumo_analise.txt", "w", encoding="utf-8") as f:
@@ -310,6 +369,7 @@ def main() -> None:
 
     print("Análise concluída.")
     print(f"Top 10 salvo em: {ranking_path}")
+    print(f"Gráfico de tempo salvo em: {out_dir / 'top10_tempo_log_epocas.png'}")
     print(json.dumps(best, indent=2, ensure_ascii=False))
 
 

@@ -14,3 +14,4 @@ Melhor experimento:
 - best_epoch: 170
 - dropout_fc: 0.3
 - weight_decay: 0.0001
+- total_training_time_sec: 4800.8489
