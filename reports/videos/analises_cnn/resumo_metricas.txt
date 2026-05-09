@@ -1,0 +1,18 @@
+=== ANÁLISE DE MÉTRICAS ===
+
+AUC: 1.0000
+Confiança média: 0.9805
+Menor confiança: 0.2335
+
+=== CASOS MAIS DIFÍCEIS ===
+    video_id true_class pred_class  prob_fake  prob_real  num_frames  correct  y_true  y_score  confidence
+    real_115       real       real   0.383237   0.616763          32     True       0 0.383237    0.233526
+    real_167       real       real   0.379772   0.620228          35     True       0 0.379772    0.240456
+    real_061       real       real   0.360281   0.639719          34     True       0 0.360281    0.279439
+fake_167_166       fake       fake   0.674619   0.325381          35     True       1 0.674619    0.349238
+fake_124_085       fake       fake   0.717053   0.282947          32     True       1 0.717053    0.434106
+    real_124       real       real   0.216201   0.783799          32     True       0 0.216201    0.567598
+fake_061_080       fake       fake   0.784315   0.215685          34     True       1 0.784315    0.568630
+fake_115_939       fake       fake   0.786952   0.213048          32     True       1 0.786952    0.573903
+fake_199_181       fake       fake   0.890586   0.109414          37     True       1 0.890586    0.781171
+fake_084_042       fake       fake   0.916086   0.083913          38     True       1 0.916086    0.832173

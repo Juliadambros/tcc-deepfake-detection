@@ -1,17 +1,17 @@
 Resumo da análise
 =================
-Total de experimentos: 171
+Total de experimentos: 181
 
 Melhor experimento:
-- run_name: treinamento_imagens_4_fase1_2026-04-03_12-22-26_bs32_ep200_lr0.0001_optRMSprop_dc0.25_df0.3_wd0.0001
+- run_name: treinamento_imagens_4_fase1_1_2026-04-04_08-10-38_bs32_ep250_lr0.0001_optRMSprop_dc0.25_df0.3_wd0.0001
 - test_f1_macro: 0.988476
 - test_accuracy: 0.988476
 - optimizer: RMSprop
 - learning_rate: 0.0001
 - batch_size: 32
-- epochs_requested: 200
-- epochs_executed: 200
+- epochs_requested: 250
+- epochs_executed: 250
 - best_epoch: 170
 - dropout_fc: 0.3
 - weight_decay: 0.0001
-- total_training_time_sec: 4800.8489
+- total_training_time_sec: 5946.4885

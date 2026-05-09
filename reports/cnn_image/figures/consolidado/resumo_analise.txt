@@ -1,6 +1,6 @@
 Resumo da análise
 =================
-Total de experimentos: 103
+Total de experimentos: 104
 
 Melhor experimento:
 - run_name: imagensCNNfase4_2026-04-20_08-29-35_bs16_ep50_lr0.0007_optSGD_df0.7_wd0.0

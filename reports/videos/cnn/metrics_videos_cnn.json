@@ -1,0 +1,47 @@
+{
+  "model_name": "cnn",
+  "model_path": "C:\\tcc mesonet\\checkpoints\\cnn\\best_imagensCNNfase4.pt",
+  "faces_dir": "C:\\tcc mesonet\\data\\processed\\faces_256_interval_10",
+  "total_videos": 400,
+  "accuracy": 1.0,
+  "precision_macro": 1.0,
+  "recall_macro": 1.0,
+  "f1_macro": 1.0,
+  "classification_report": {
+    "fake": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 200.0
+    },
+    "real": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 200.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 400.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 400.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      200,
+      0
+    ],
+    [
+      0,
+      200
+    ]
+  ]
+}
