@@ -1,15 +1,6 @@
 data/*
 !data/.gitkeep
 
-!data/dataset/
-!data/dataset/.gitkeep
-
-!data/dataset_faces/
-!data/dataset_faces/.gitkeep
-
-data/dataset/*
-data/dataset_faces/*
-
 experiments/*
 !experiments/.gitkeep
 
