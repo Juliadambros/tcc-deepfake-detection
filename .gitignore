@@ -9,8 +9,12 @@ resultados/*.pt
 resultados/**/*.pt
 *.pt
 
+checkpoints/*
+reports/*
 
+configs/*
 venv/
+.vscode/*
 
 __pycache__/
 *.pyc
