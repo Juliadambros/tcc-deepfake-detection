@@ -3,16 +3,16 @@ data/*
 !data/dataset/.gitkeep
 !data/dataset_faces/.gitkeep
 
-experiments/*
+experiments/
 
 resultados/*.pt
 resultados/**/*.pt
 *.pt
 
-checkpoints/*
-reports/*
+checkpoints/
+reports/
 
-configs/*
+configs/
 venv/
 .vscode/*
 
