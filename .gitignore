@@ -1,18 +1,31 @@
 data/*
 !data/.gitkeep
+
+!data/dataset/
 !data/dataset/.gitkeep
+
+!data/dataset_faces/
 !data/dataset_faces/.gitkeep
 
-experiments/
+data/dataset/*
+data/dataset_faces/*
+
+experiments/*
+!experiments/.gitkeep
 
 resultados/*.pt
 resultados/**/*.pt
 *.pt
 
-checkpoints/
-reports/
+checkpoints/*
+!checkpoints/.gitkeep
 
-configs/
+reports/*
+!reports/.gitkeep
+
+configs/*
+!configs/.gitkeep
+
 venv/
 .vscode/*
 
