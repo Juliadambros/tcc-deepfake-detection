@@ -19,7 +19,7 @@ from modelos.cnn_baseline.model import CNNBaseline
 
 DEVICE = "cuda"
 
-VIDEO_PATH = "data/raw/FaceForensics++_C23/deepfakes/970_973.mp4"
+VIDEO_PATH = "data/raw/FaceForensics++_C23/deepfakes/000_003.mp4"
 
 MESO_PATH = "checkpoints/mesonet_images/best_treinamento_imagens_4_fase1_1.pt"
 CNN_PATH = "checkpoints/cnn/best_imagensCNNfase4.pt"
@@ -138,23 +138,84 @@ def plot_frames(frames, meso_scores, cnn_scores):
 
 def plot_temporal(meso_scores, cnn_scores):
 
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(8, 3.5))
 
-    plt.plot(meso_scores, marker='o', label="MesoNet")
-    plt.plot(cnn_scores, marker='s', label="CNN")
+    plt.plot(
+        meso_scores,
+        marker='o',
+        linewidth=2.5,
+        markersize=6,
+        label="Meso-4"
+    )
 
-    plt.axhline(0.5, linestyle="--")
+    plt.plot(
+        cnn_scores,
+        marker='s',
+        linewidth=2.5,
+        markersize=6,
+        label="CNN Baseline"
+    )
 
-    plt.xlabel("Frame (amostrado)")
-    plt.ylabel("Probabilidade de FAKE")
-    plt.title("Evolução da probabilidade ao longo do vídeo")
+    plt.axhline(
+        0.5,
+        linestyle="--",
+        linewidth=2,
+        color="black",
+        label="Limiar"
+    )
 
-    plt.legend()
-    plt.grid()
+    plt.ylim(0.45, 1.02)
 
-    plt.savefig(OUTPUT_DIR / f"{VIDEO_NAME}_temporal.png", dpi=200)
+    plt.xlabel(
+        "Frame (amostrado)",
+        fontsize=14,
+        fontweight="bold"
+    )
+
+    plt.ylabel(
+        "Probabilidade de FAKE",
+        fontsize=14,
+        fontweight="bold"
+    )
+
+    plt.title(
+        "Evolução da probabilidade ao longo do vídeo",
+        fontsize=16,
+        fontweight="bold"
+    )
+
+    plt.xticks(
+        fontsize=12,
+        fontweight="bold"
+    )
+
+    plt.yticks(
+        fontsize=12,
+        fontweight="bold"
+    )
+
+    plt.legend(
+        fontsize=12,
+        frameon=True
+    )
+
+    plt.grid(
+        True,
+        linestyle="--",
+        linewidth=1.2,
+        alpha=0.8,
+        color="gray"
+    )
+
+    plt.tight_layout()
+
+    plt.savefig(
+        OUTPUT_DIR / f"{VIDEO_NAME}_temporal.png",
+        dpi=300,
+        bbox_inches="tight"
+    )
+
     plt.close()
-
 def main():
 
     print("Carregando modelos...")
